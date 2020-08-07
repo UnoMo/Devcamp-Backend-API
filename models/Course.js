@@ -31,9 +31,11 @@ const CourseSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  bootcamp: mongoose.Schema.ObjectId,
-  ref: "Bootcamp",
-  required: true
+  bootcamp: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Bootcamp",
+    required: true
+  }
 });
 
 module.exports = mongoose.model("Course", CourseSchema);
