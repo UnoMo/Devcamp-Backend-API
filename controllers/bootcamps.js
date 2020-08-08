@@ -28,7 +28,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
   );
 
   // Finding resource
-  query = Bootcamp.find(JSON.parse(queryStr));
+  query = Bootcamp.find(JSON.parse(queryStr)).populate("courses");
 
   // Select fields
   if (req.query.select) {
@@ -62,14 +62,14 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
   if (endIndex < total) {
     pagination.next = {
       page: page + 1,
-      limit,
+      limit
     };
   }
 
   if (startIndex > 0) {
     pagination.prev = {
       page: page - 1,
-      limit,
+      limit
     };
   }
 
@@ -77,7 +77,7 @@ exports.getBootcamps = asyncHandler(async (req, res, next) => {
     success: true,
     count: bootcamps.length,
     pagination,
-    data: bootcamps,
+    data: bootcamps
   });
 });
 
@@ -104,7 +104,7 @@ exports.createBootcamp = asyncHandler(async (req, res, next) => {
 
   res.status(201).json({
     success: true,
-    data: bootcamp,
+    data: bootcamp
   });
 });
 
@@ -114,7 +114,7 @@ exports.createBootcamp = asyncHandler(async (req, res, next) => {
 exports.updateBootcamp = asyncHandler(async (req, res, next) => {
   const bootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
-    runValidators: true,
+    runValidators: true
   });
 
   if (!bootcamp) {
@@ -159,12 +159,12 @@ exports.getBootcampsInRadius = asyncHandler(async (req, res, next) => {
   const radius = distance / 6378;
 
   const bootcamps = await Bootcamp.find({
-    location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
+    location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
   });
 
   res.status(200).json({
     success: true,
     count: bootcamps.length,
-    data: bootcamps,
+    data: bootcamps
   });
 });
